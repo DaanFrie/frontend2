@@ -3,12 +3,10 @@ import './App.css'
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Layout from "./Layout.jsx";
 import Home from "./Home.jsx";
-import About from "./About.jsx";
-import Games from "./Games.jsx";
 import Game from "./Game.jsx";
 import CreateGames from "./CreateGames.jsx";
 import FetchGames from "./FetchGames.jsx";
-import EditGame from "./EditGame.jsx"; // Vergeet niet de EditGame component in te voegen
+import EditGame from "./EditGame.jsx";
 
 const router = createBrowserRouter([{
     element: <Layout />,
@@ -17,18 +15,17 @@ const router = createBrowserRouter([{
             path: '/',
             element: <Home />,
         },
-
         {
             path: '/Games',
-            element: <Games />
+            element: <FetchGames />
         },
         {
             path: '/Game/:id',
             element: <Game />
         },
         {
-            path: '/game/edit/:id', // Voeg hier de route toe voor het bewerken van een game
-            element: <EditGame /> // De component voor de editpagina
+            path: '/game/edit/:id',
+            element: <EditGame />
         },
         {
             path: '/Games/Create',

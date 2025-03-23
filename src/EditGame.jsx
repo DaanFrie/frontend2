@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, Link } from "react-router";
 
 const EditGame = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     const [game, setGame] = useState(null);
     const [name, setName] = useState('');
     const [platform, setPlatform] = useState('');
     const [genre, setGenre] = useState('');
     const [error, setError] = useState('');
-
-    // Verkrijg de game-id uit de URL zonder react-router
-    const id = window.location.pathname.split('/').pop();
 
     useEffect(() => {
         const fetchGame = async () => {
@@ -59,13 +60,11 @@ const EditGame = () => {
                     platform,
                     genre,
                 }),
-                mode: 'cors',
             });
 
-
             if (response.ok) {
-                // Navigeer naar de game detailpagina
-                window.location.href = `/game/${id}`;
+
+                navigate(`/game/${id}`);
             } else {
                 setError('Error updating the game.');
             }
@@ -74,13 +73,10 @@ const EditGame = () => {
         }
     };
 
-    if (error) {
-        return <p>{error}</p>;
-    }
-
     return (
         <div className="mx-auto p-8">
             <h1 className="text-2xl mb-4">Edit Game</h1>
+            {error && <p className="mb-4 text-red-500">{error}</p>}
             {game ? (
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -113,9 +109,18 @@ const EditGame = () => {
                             className="w-full p-2 border rounded"
                         />
                     </div>
-                    <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                    <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                    >
                         Update Game
                     </button>
+
+                    <div className="mt-4">
+                        <Link to={`/`} className="text-blue-500 underline">
+                            Cancel & go back
+                        </Link>
+                    </div>
                 </form>
             ) : (
                 <p>Loading...</p>

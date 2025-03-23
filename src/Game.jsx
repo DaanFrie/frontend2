@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router";
 
 function Game() {
+    const { id } = useParams(); // Haalt de game-id op uit de route-parameter
     const [game, setGame] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Verkrijg de ID van de URL
-        const id = window.location.pathname.split('/')[2];
-
         async function fetchGameDetails() {
             try {
                 const response = await fetch(`http://145.24.223.37:8000/games/${id}`, {
@@ -31,9 +30,8 @@ function Game() {
                 setLoading(false);
             }
         }
-
         fetchGameDetails();
-    }, []);
+    }, [id]);
 
     if (loading) {
         return <p className="text-center text-gray-500">Loading...</p>;

@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router";
-import { FaHome, FaGamepad, FaPlus, FaInfoCircle } from "react-icons/fa"; // Import icons
+import { FaGamepad, FaPlus,} from "react-icons/fa";
 
 function Layout() {
     return (

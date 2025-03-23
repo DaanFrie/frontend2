@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router";
 
 const FetchGames = () => {
-    const [games, setGames] = useState([]); // Initialiseer als lege array
+    const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchGames() {
@@ -40,7 +43,7 @@ const FetchGames = () => {
         fetchGames();
     }, []);
 
-    // Verwijder de game uit de lijst
+    // Delete
     const deleteGame = async (gameId) => {
         try {
             const response = await fetch(`http://145.24.223.37:8000/games/${gameId}`, {
@@ -55,7 +58,7 @@ const FetchGames = () => {
                 throw new Error(`HTTP-fout bij verwijderen: ${response.status}`);
             }
 
-            // Verwijder de game uit de lokale status
+            // Update de lokale status door de verwijderde game eruit te filteren
             setGames(games.filter(game => game.id !== gameId));
         } catch (error) {
             console.error("Error:", error.message);
@@ -63,14 +66,14 @@ const FetchGames = () => {
         }
     };
 
-    // Functie om naar de detailpagina van de geselecteerde game te navigeren
+    // Navigeer naar de detailpagina van de geselecteerde game
     const goToGameDetails = (gameId) => {
-        window.location.href = `/game/${gameId}`;
+        navigate(`/game/${gameId}`);
     };
 
-    // Functie om naar de bewerkingspagina van de geselecteerde game te navigeren
+
     const goToEditGame = (gameId) => {
-        window.location.href = `/game/edit/${gameId}`;
+        navigate(`/game/edit/${gameId}`);
     };
 
     if (loading) {
@@ -93,18 +96,21 @@ const FetchGames = () => {
                         key={game.id}
                         className="p-4 border rounded shadow bg-blue-700 text-white flex flex-col items-center cursor-pointer hover:bg-blue-800 transition-colors"
                     >
-                        <h2 className="font-bold text-xl" onClick={() => goToGameDetails(game.id)}>
+                        <h2
+                            className="font-bold text-xl"
+                            onClick={() => goToGameDetails(game.id)}
+                        >
                             {game.name}
                         </h2>
                         <div className="mt-4 space-x-2">
-                            {/* Voeg een Delete-knop toe */}
+                            {/* Delete-knop */}
                             <button
                                 onClick={() => deleteGame(game.id)}
                                 className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors"
                             >
                                 Delete
                             </button>
-                            {/* Voeg een Edit-knop toe */}
+                            {/* Edit-knop */}
                             <button
                                 onClick={() => goToEditGame(game.id)}
                                 className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors"
